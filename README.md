@@ -1,4 +1,4 @@
-#### unhide - export symbols with “hidden” visibility.
+## unhide - export symbols with “hidden” visibility.
 
 Since Swift 1.2 (Xcode 3.6) "internal" symbols of Swift frameworks are
 given "hidden" C visibility to prevent them being accessed from outside 
