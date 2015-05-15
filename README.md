@@ -16,7 +16,14 @@ in preference to having to make the symbols public in the Swift source.
 To use, build this project and add a "Run Script" build phase to the
 target that builds the framework just after linking that contains:
 
-    ~/bin/unhide.sh
+```shell
+    UNHIDE=~/bin/unhide.sh
+    if [ -f $UNHIDE ]; then
+        $UNHIDE
+    else
+        echo "File $UNHIDE used for code Injection does not exist."
+    fi
+```
 
 This will patch the object files of the framework project to export all
 symbols defined on the package and then re-link the framework executable.
