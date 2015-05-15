@@ -2,7 +2,7 @@
 //  main.mm
 //  unhide
 //
-//  $Id: //depot/unhide/main.mm#6 $
+//  $Id: //depot/unhide/main.mm#8 $
 //
 //  exports "hidden" symbols in a set of object files allowing them
 //  to be used to create a Swift framework that can be "injected".
@@ -38,7 +38,7 @@ int main(int argc, const char * argv[]) {
 
         for ( int fileno = 2 ; fileno < argc ; fileno++ ) {
             NSString *file = [NSString stringWithUTF8String:argv[fileno]];
-            NSData *data = [NSMutableData dataWithContentsOfFile:file];
+            NSData *data = [[NSMutableData alloc] initWithContentsOfFile:file];
 
             if ( !data ) {
                 fprintf( stderr, "unhide: Could not read %s\n", [file UTF8String] );
@@ -96,7 +96,7 @@ int main(int argc, const char * argv[]) {
                 if ( strncmp( symname, "__swift_", 8 ) != 0 &&
                         strstr( symname, framework ) != NULL &&
                         symbol.n_sect && !seen[symname]++ ) {
-                    symbol.n_type |= N_EXT;//|N_PEXT;//|0xf;
+                    symbol.n_type |= N_EXT;
                     symbol.n_type &= ~N_PEXT;
                     symbol.n_desc = N_GSYM;
                     printf( "exported: #%d 0%lo 0x%x 0x%x %3d %s\n", i,

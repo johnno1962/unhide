@@ -1,8 +1,9 @@
 ## unhide - export symbols with “hidden” visibility.
 
 Since Swift 1.2 (Xcode 3.6) "internal" symbols of Swift frameworks are
-given "hidden" C visibility to prevent them being accessed from outside 
-the framework. This is a problem for programs like 
+given "hidden" C [visibility](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/CppRuntimeEnv/Articles/SymbolVisibility.html)
+to prevent them being accessed from outside the framework.
+This is a problem for programs like 
 [injectionforxcode](https://github.com/johnno1962/injectionforxcode)
 which need to access these symbols when a class from the framework 
 is "injected" by dynamically loading a new version of the class.
@@ -13,7 +14,7 @@ so they can be accessed in global scope by the run time loader. This is
 in preference to having to make the symbols public in the Swift source.
 
 To use, build this project and add a "Run Script" build phase to the
-target that builds the framework that contains:
+target that builds the framework just after linking that contains:
 
     ~/bin/unhide.sh
 
