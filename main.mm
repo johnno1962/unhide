@@ -2,7 +2,7 @@
 //  main.mm
 //  unhide
 //
-//  $Id: //depot/unhide/main.mm#8 $
+//  $Id: //depot/unhide/main.mm#9 $
 //
 //  exports "hidden" symbols in a set of object files allowing them
 //  to be used to create a Swift framework that can be "injected".
@@ -48,7 +48,8 @@ int main(int argc, const char * argv[]) {
             struct mach_header_64 *object = (struct mach_header_64 *)[data bytes];
 
             if ( object->magic != MH_MAGIC_64 ) {
-                fprintf( stderr, "unhide: Invalid magic %x c.f. %x\n", object->magic, MH_MAGIC_64 );
+                fprintf( stderr, "unhide: Invalid magic 0x%x != 0x%x (bad arch?)\n",
+                        object->magic, MH_MAGIC_64 );
                 exit(1);
             }
 
