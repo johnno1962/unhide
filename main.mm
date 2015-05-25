@@ -2,7 +2,7 @@
 //  main.mm
 //  unhide
 //
-//  $Id: //depot/unhide/main.mm#9 $
+//  $Id: //depot/unhide/main.mm#10 $
 //
 //  exports "hidden" symbols in a set of object files allowing them
 //  to be used to create a Swift framework that can be "injected".
@@ -67,10 +67,10 @@ int main(int argc, const char * argv[]) {
             }
 
             if ( !symtab || !dylib ) {
-                fprintf( stderr, "unhide: Missing symtab or dylib cmd %p & %p\n", symtab, dylib );
-                exit(1);
+                fprintf( stderr, "unhide: Missing symtab or dylib cmd %s: %p & %p\n",
+                        strrchr( [file UTF8String], '/' )+1, symtab, dylib );
+                continue;
             }
-
             struct nlist_64 *all_symbols64 = (struct nlist_64 *)((char *)object + symtab->symoff);
 #if 1
             struct nlist_64 *end_symbols64 = all_symbols64 + symtab->nsyms;
