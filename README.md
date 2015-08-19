@@ -1,6 +1,6 @@
 ## unhide - export symbols with “hidden” visibility.
 
-Since Swift 1.2 (Xcode 3.6) "internal" symbols of Swift frameworks are
+Since Swift 1.2 (Xcode 6.3) "internal" symbols of Swift frameworks are
 given "hidden" C [visibility](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/CppRuntimeEnv/Articles/SymbolVisibility.html)
 to prevent them being accessed from outside the framework.
 This is a problem for programs like 
