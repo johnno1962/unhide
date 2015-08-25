@@ -37,7 +37,14 @@ int main(int argc, const char * argv[]) {
                       [NSString stringWithUTF8String:framework]] UTF8String];
 
         for ( int fileno = 2 ; fileno < argc ; fileno++ ) {
-            NSString *file = [NSString stringWithUTF8String:argv[fileno]];
+            char buffer[PATH_MAX];
+            strcpy( buffer, argv[fileno] );
+            while ( fileno+1 < argc && strcmp( buffer+strlen(buffer)-2, ".o" ) != 0 ) {
+                strcat( buffer, " " );
+                strcat( buffer, argv[++fileno] );
+            }
+
+            NSString *file = [NSString stringWithUTF8String:buffer];
             NSData *data = [[NSMutableData alloc] initWithContentsOfFile:file];
 
             if ( !data ) {
