@@ -16,7 +16,7 @@
 		BBB4999F1B03B11000FF5818 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = "~/bin";
+			dstPath = $HOME/bin;
 			dstSubfolderSpec = 0;
 			files = (
 				BB4B347E1B058BB70036C603 /* unhide.sh in CopyFiles */,
@@ -109,6 +109,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = BBB499981B03B11000FF5818;

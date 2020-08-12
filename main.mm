@@ -2,7 +2,7 @@
 //  main.mm
 //  unhide
 //
-//  $Id: //depot/unhide/main.mm#10 $
+//  $Id: //depot/unhide/main.mm#12 $
 //
 //  exports "hidden" symbols in a set of object files allowing them
 //  to be used to create a Swift framework that can be "injected".
@@ -36,7 +36,7 @@ int main(int argc, const char * argv[]) {
         framework = [[NSString stringWithFormat:@"%zu%@", strlen(framework),
                       [NSString stringWithUTF8String:framework]] UTF8String];
 
-        for ( int fileno = 2 ; fileno < argc ; fileno++ ) {
+        for ( int fileno = argc == 2 ? 1 : 2 ; fileno < argc ; fileno++ ) {
             char buffer[PATH_MAX];
             strcpy( buffer, argv[fileno] );
             while ( fileno+1 < argc && strcmp( buffer+strlen(buffer)-2, ".o" ) != 0 ) {
@@ -93,19 +93,26 @@ int main(int argc, const char * argv[]) {
                    dylib->locreloff, dylib->nlocrel,
                    (char *)&end_symbols64->n_un - (char *)object );
 
-            dylib->iextdefsym -= dylib->nlocalsym;
-            dylib->nextdefsym += dylib->nlocalsym;
-            dylib->nlocalsym = 0;
+//            dylib->iextdefsym -= dylib->nlocalsym;
+//            dylib->nextdefsym += dylib->nlocalsym;
+//            dylib->nlocalsym = 0;
 #endif
             for ( int i=0 ; i<symtab->nsyms ; i++ ) {
                 struct nlist_64 &symbol = all_symbols64[i];
                 const char *symname = (char *)object + symtab->stroff + symbol.n_un.n_strx;
 
-                if ( strncmp( symname, "__swift_", 8 ) != 0 &&
-                        strstr( symname, framework ) != NULL &&
-                        symbol.n_sect && !seen[symname]++ ) {
+                printf( "symbol: #%d 0%lo 0x%x 0x%x %3d %s\n", i,
+                       (char *)&symbol.n_type - (char *)object,
+                       symbol.n_type, symbol.n_desc,
+                       symbol.n_sect, symname );
+                if ( strncmp( symname, "_$s", 3 ) == 0 &&
+//                        strstr( symname, framework ) != NULL &&
+                    symbol.n_sect && (argc == 2 || !seen[symname]++) ) {
+                    if (!(symbol.n_type & N_PEXT))
+                        continue;
                     symbol.n_type |= N_EXT;
                     symbol.n_type &= ~N_PEXT;
+                    symbol.n_type = 0xf;
                     symbol.n_desc = N_GSYM;
                     printf( "exported: #%d 0%lo 0x%x 0x%x %3d %s\n", i,
                            (char *)&symbol.n_type - (char *)object,
@@ -114,6 +121,7 @@ int main(int argc, const char * argv[]) {
                 }
             }
 
+//            [[NSFileManager defaultManager] removeItemAtPath:file error:NULL];
             if ( ![data writeToFile:file atomically:NO] ) {
                 fprintf( stderr, "unhide: Could not write %s\n", [file UTF8String] );
                 exit(1);
