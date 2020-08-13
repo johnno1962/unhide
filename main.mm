@@ -99,7 +99,7 @@ int main(int argc, const char * argv[]) {
 #endif
             for ( int i=0 ; i<symtab->nsyms ; i++ ) {
                 struct nlist_64 &symbol = all_symbols64[i];
-                const char *symname = (char *)object + symtab->stroff + symbol.n_un.n_strx;
+                const char *symname = (char *)object + symtab->stroff + symbol.n_un.n_strx, *symend;
 
                 printf( "symbol: #%d 0%lo 0x%x 0x%x %3d %s\n", i,
                        (char *)&symbol.n_type - (char *)object,
@@ -107,6 +107,9 @@ int main(int argc, const char * argv[]) {
                        symbol.n_sect, symname );
                 if ( strncmp( symname, "_$s", 3 ) == 0 &&
 //                        strstr( symname, framework ) != NULL &&
+                    // unhide only default argument functions for now
+                    (symend = symname + strlen(symname)) &&
+                    symend[-3] == 'A' && isdigit(symend[-2]) && symend[-1] == '_' &&
                     symbol.n_sect && (argc == 2 || !seen[symname]++) ) {
                     if (!(symbol.n_type & N_PEXT))
                         continue;
