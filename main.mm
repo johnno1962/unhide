@@ -2,7 +2,7 @@
 //  main.mm
 //  unhide
 //
-//  $Id: //depot/unhide/main.mm#14 $
+//  $Id: //depot/unhide/main.mm#15 $
 //
 //  exports "hidden" symbols in a set of object files allowing them
 //  to be used to create a Swift framework that can be "injected".
@@ -109,7 +109,8 @@ int main(int argc, const char * argv[]) {
 //                        strstr( symname, framework ) != NULL &&
                     // unhide only default argument functions for now
                     (symend = symname + strlen(symname)) && symend[-1] == '_' &&
-                    (symend[-2] == 'A' || (symend[-3] == 'A' && isdigit(symend[-2]))) &&
+                    (symend[-2] == 'A' || (symend[-3] == 'A' && isdigit(symend[-2])) ||
+                    (symend[-4] == 'A' && isdigit(symend[-3]) && isdigit(symend[-2]))) &&
                     symbol.n_sect && (argc == 2 || !seen[symname]++) ) {
                     if (!(symbol.n_type & N_PEXT))
                         continue;
