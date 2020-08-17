@@ -2,7 +2,7 @@
 //  main.mm
 //  unhide
 //
-//  $Id: //depot/unhide/main.mm#15 $
+//  $Id: //depot/unhide/main.mm#18 $
 //
 //  exports "hidden" symbols in a set of object files allowing them
 //  to be used to create a Swift framework that can be "injected".
@@ -45,14 +45,15 @@ int main(int argc, const char * argv[]) {
             }
 
             NSString *file = [NSString stringWithUTF8String:buffer];
-            NSData *data = [[NSMutableData alloc] initWithContentsOfFile:file];
+            NSData *data = [[NSData alloc] initWithContentsOfFile:file];
+            NSData *patched = [data mutableCopy];
 
-            if ( !data ) {
+            if ( !patched ) {
                 fprintf( stderr, "unhide: Could not read %s\n", [file UTF8String] );
                 exit(1);
             }
 
-            struct mach_header_64 *object = (struct mach_header_64 *)[data bytes];
+            struct mach_header_64 *object = (struct mach_header_64 *)[patched bytes];
 
             if ( object->magic != MH_MAGIC_64 ) {
                 fprintf( stderr, "unhide: Invalid magic 0x%x != 0x%x (bad arch?)\n",
@@ -101,13 +102,14 @@ int main(int argc, const char * argv[]) {
                 struct nlist_64 &symbol = all_symbols64[i];
                 const char *symname = (char *)object + symtab->stroff + symbol.n_un.n_strx, *symend;
 
-                printf( "symbol: #%d 0%lo 0x%x 0x%x %3d %s\n", i,
-                       (char *)&symbol.n_type - (char *)object,
-                       symbol.n_type, symbol.n_desc,
-                       symbol.n_sect, symname );
+//                printf( "symbol: #%d 0%lo 0x%x 0x%x %3d %s\n", i,
+//                       (char *)&symbol.n_type - (char *)object,
+//                       symbol.n_type, symbol.n_desc,
+//                       symbol.n_sect, symname );
                 if ( strncmp( symname, "_$s", 3 ) == 0 &&
 //                        strstr( symname, framework ) != NULL &&
-                    // unhide only default argument functions for now
+                    // unhide only default argument functions
+                    // for now i.e. functions ending /A\d*_$/
                     (symend = symname + strlen(symname)) && symend[-1] == '_' &&
                     (symend[-2] == 'A' || (symend[-3] == 'A' && isdigit(symend[-2])) ||
                     (symend[-4] == 'A' && isdigit(symend[-3]) && isdigit(symend[-2]))) &&
@@ -125,8 +127,8 @@ int main(int argc, const char * argv[]) {
                 }
             }
 
-//            [[NSFileManager defaultManager] removeItemAtPath:file error:NULL];
-            if ( ![data writeToFile:file atomically:NO] ) {
+            if (![patched isEqualToData:data] &&
+                ![patched writeToFile:file atomically:NO]) {
                 fprintf( stderr, "unhide: Could not write %s\n", [file UTF8String] );
                 exit(1);
             }
