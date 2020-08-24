@@ -2,7 +2,7 @@
 //  main.mm
 //  unhide
 //
-//  $Id: //depot/unhide/main.mm#18 $
+//  $Id: //depot/unhide/main.mm#19 $
 //
 //  exports "hidden" symbols in a set of object files allowing them
 //  to be used to create a Swift framework that can be "injected".
@@ -25,8 +25,8 @@
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        if ( argc < 2  ) {
-            fprintf( stderr, "Usage: unhide framework objects...\n" );
+        if ( argc < 3 ) {
+            fprintf( stderr, "Usage: unhide framework link_file_list\n" );
             exit(1);
         }
 
@@ -36,14 +36,17 @@ int main(int argc, const char * argv[]) {
         framework = [[NSString stringWithFormat:@"%zu%@", strlen(framework),
                       [NSString stringWithUTF8String:framework]] UTF8String];
 
-        for ( int fileno = argc == 2 ? 1 : 2 ; fileno < argc ; fileno++ ) {
-            char buffer[PATH_MAX];
-            strcpy( buffer, argv[fileno] );
-            while ( fileno+1 < argc && strcmp( buffer+strlen(buffer)-2, ".o" ) != 0 ) {
-                strcat( buffer, " " );
-                strcat( buffer, argv[++fileno] );
-            }
+        const char *linkFileList = argv[2];
+        FILE *linkFiles = fopen(linkFileList, "r");
+        if ( !linkFiles ) {
+           fprintf( stderr, "unhide: Could not open link file list %s\n", linkFileList );
+           exit(1);
+        }
 
+        char buffer[PATH_MAX];
+
+        while ( fgets(buffer, sizeof buffer, linkFiles) ) {
+            buffer[strlen(buffer)-1] = '\000';
             NSString *file = [NSString stringWithUTF8String:buffer];
             NSData *data = [[NSData alloc] initWithContentsOfFile:file];
             NSData *patched = [data mutableCopy];

@@ -19,7 +19,6 @@ if [ "$CONFIGURATION" = "Debug" ]; then
     fi
 
     echo "Exporting any \"hidden\" Swift internal symbols in $PRODUCT_NAME framework" &&
-    `dirname $0`/unhide "$PRODUCT_NAME" `cat "$LINK_FILE_LIST"`> /tmp/unhide_$USER.log &&
-    #`dirname $0`/unhide "$CODESIGNING_FOLDER_PATH/$PRODUCT_NAME" &&
+    `dirname $0`/unhide "$PRODUCT_NAME" "$LINK_FILE_LIST"> /tmp/unhide_$USER.log &&
     exit $?
 fi
