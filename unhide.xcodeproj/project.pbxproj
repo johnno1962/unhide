@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB4B347B1B058B290036C603 /* unhide in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBB499A11B03B11000FF5818 /* unhide */; };
+		BB4B347B1B058B290036C603 /* unhide in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBB499A11B03B11000FF5818 /* unhide */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB4B347E1B058BB70036C603 /* unhide.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB4B347D1B058B580036C603 /* unhide.sh */; };
 		BB8101611B0566B600C70EE6 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB8101601B0566B600C70EE6 /* main.mm */; };
 /* End PBXBuildFile section */
@@ -67,7 +67,7 @@
 				BB8101601B0566B600C70EE6 /* main.mm */,
 				BB4B347D1B058B580036C603 /* unhide.sh */,
 			);
-			path = unhide;
+			name = unhide;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
