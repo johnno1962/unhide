@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB0AE65C25FC9E9A00A6F8A5 /* Unhide.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB0AE65B25FC9E9A00A6F8A5 /* Unhide.mm */; };
 		BB4B347B1B058B290036C603 /* unhide in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBB499A11B03B11000FF5818 /* unhide */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB4B347E1B058BB70036C603 /* unhide.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB4B347D1B058B580036C603 /* unhide.sh */; };
-		BB8101611B0566B600C70EE6 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB8101601B0566B600C70EE6 /* main.mm */; };
+		BB8101611B0566B600C70EE6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB8101601B0566B600C70EE6 /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,9 +28,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BB0AE65B25FC9E9A00A6F8A5 /* Unhide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Unhide.mm; sourceTree = "<group>"; };
+		BB0AE65F25FC9EBF00A6F8A5 /* Unhide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Unhide.h; sourceTree = "<group>"; };
 		BB4B347D1B058B580036C603 /* unhide.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = unhide.sh; sourceTree = SOURCE_ROOT; };
 		BB4B347F1B0607100036C603 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		BB8101601B0566B600C70EE6 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = SOURCE_ROOT; };
+		BB8101601B0566B600C70EE6 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
 		BBB499A11B03B11000FF5818 /* unhide */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unhide; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -64,7 +67,9 @@
 		BBB499A31B03B11000FF5818 /* unhide */ = {
 			isa = PBXGroup;
 			children = (
-				BB8101601B0566B600C70EE6 /* main.mm */,
+				BB8101601B0566B600C70EE6 /* main.m */,
+				BB0AE65F25FC9EBF00A6F8A5 /* Unhide.h */,
+				BB0AE65B25FC9E9A00A6F8A5 /* Unhide.mm */,
 				BB4B347D1B058B580036C603 /* unhide.sh */,
 			);
 			name = unhide;
@@ -127,7 +132,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB8101611B0566B600C70EE6 /* main.mm in Sources */,
+				BB0AE65C25FC9E9A00A6F8A5 /* Unhide.mm in Sources */,
+				BB8101611B0566B600C70EE6 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
